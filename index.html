@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEPOG: Produtos Estratégicos</title>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
+
+  <style>
+    /* ══════════════════════════════════════════════════════════════
+       RESET & BASE
+       ══════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* Brand */
+      --brand-600: #2E7D32;
+      --brand-500: #4CAF4F;
+      --brand-400: #66BB6A;
+      --brand-200: #A5D6A7;
+      --brand-100: #E8F5E9;
+      --brand-50:  #F1F8E9;
+
+      /* Dark mode tokens */
+      --dark-950: #050a05;
+      --dark-900: #0a120a;
+      --dark-800: #0f1a0f;
+      --dark-700: #162016;
+      --dark-600: #1a2e1a;
+      --dark-border: rgba(76,175,79,0.12);
+
+      /* Neutras */
+      --gray-900: #111827;
+      --gray-700: #374151;
+      --gray-500: #6B7280;
+      --gray-400: #9CA3AF;
+      --gray-300: #D1D5DB;
+      --gray-200: #E5E7EB;
+      --gray-100: #F3F4F6;
+      --gray-50:  #F9FAFB;
+      --white:    #FFFFFF;
+
+      /* Semânticas */
+      --success-bg:     #E8F5E9;
+      --success-text:   #2E7D32;
+      --success-border: #A5D6A7;
+      --warning-bg:     #FFF8E1;
+      --warning-text:   #F57F17;
+      --warning-border: #FFE082;
+      --info-bg:        #E3F2FD;
+      --info-text:      #1565C0;
+      --info-border:    #90CAF9;
+
+      /* Tipografia */
+      --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", "Fira Code", monospace;
+      --text-hero:    clamp(2.5rem, 5vw, 4rem);
+      --text-display: clamp(1.75rem, 3vw, 2.5rem);
+      --text-heading: 1.5rem;
+      --text-lg:      1.125rem;
+      --text-base:    0.9375rem;
+      --text-sm:      0.8125rem;
+      --text-xs:      0.6875rem;
+
+      /* Espaçamento */
+      --space-1:  4px;  --space-2:  8px;  --space-3: 12px; --space-4: 16px;
+      --space-6: 24px;  --space-8: 32px;  --space-10:40px; --space-12:48px;
+      --space-16:64px;  --space-20:80px;  --space-24:96px;
+
+      /* Bordas & Sombras */
+      --radius-sm:   4px; --radius-md: 8px; --radius-lg: 12px;
+      --radius-xl:  16px; --radius-2xl: 20px; --radius-full: 9999px;
+      --shadow-card:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md:    0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg:    0 12px 40px rgba(0,0,0,0.12);
+      --shadow-glow:  0 0 40px rgba(76,175,79,0.15);
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+    body {
+      font-family: var(--font-sans);
+      color: var(--gray-700);
+      background: var(--dark-950);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SECTION BASE
+       ══════════════════════════════════════════════════════════════ */
+    .section {
+      width: 100%;
+      min-height: 100vh;
+      padding: var(--space-24) var(--space-8);
+      display: flex;
+      align-items: center;
+      scroll-snap-align: start;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── Fundos ──────────────────────────────────────────────── */
+    .section--dark {
+      background: var(--dark-950);
+      color: rgba(255,255,255,0.9);
+    }
+    .section--light {
+      background: var(--white);
+      color: var(--gray-700);
+    }
+    .section--light-alt {
+      background: var(--gray-50);
+      color: var(--gray-700);
+    }
+    .section--green-light {
+      background: linear-gradient(180deg, var(--brand-50) 0%, var(--white) 100%);
+      color: var(--gray-700);
+    }
+
+    /* ── Grid de fundo (seções escuras) ──────────────────────── */
+    .section--dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(76,175,79,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(76,175,79,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* ── Noise texture overlay (todas as seções) ─────────────── */
+    .section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       TYPOGRAPHY
+       ══════════════════════════════════════════════════════════════ */
+    .section-eyebrow {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--brand-500);
+      font-weight: 600;
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .section-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--brand-500);
+      border-radius: 1px;
+    }
+    .section--dark .section-eyebrow {
+      color: var(--brand-400);
+    }
+    .section--dark .section-eyebrow::before {
+      background: var(--brand-400);
+    }
+
+    .section-title {
+      font-size: var(--text-display);
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: var(--space-4);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+    .section--dark .section-title {
+      color: var(--white);
+    }
+
+    .section-subtitle {
+      font-size: var(--text-lg);
+      color: var(--gray-500);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: var(--space-12);
+    }
+    .section--dark .section-subtitle {
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       CONTENT BLOCKS
+       ══════════════════════════════════════════════════════════════ */
+    .content-block {
+      border-left: 3px solid var(--brand-500);
+      padding-left: var(--space-6);
+      margin-bottom: var(--space-8);
+      transition: border-color 0.3s ease;
+    }
+    .content-block:hover {
+      border-left-color: var(--brand-600);
+    }
+    .content-block__label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand-600);
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+    }
+    .content-block__text {
+      font-size: var(--text-base);
+      color: var(--gray-700);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       BADGES
+       ══════════════════════════════════════════════════════════════ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge--active {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid var(--success-border);
+    }
+    .badge--wip {
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border: 1px solid var(--warning-border);
+    }
+    .badge--dark {
+      background: rgba(76,175,79,0.1);
+      color: var(--brand-400);
+      border: 1px solid rgba(76,175,79,0.2);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       CHIPS
+       ══════════════════════════════════════════════════════════════ */
+    .chip {
+      background: var(--info-bg);
+      color: var(--info-text);
+      border: 1px solid var(--info-border);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(21,101,192,0.15);
+    }
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       S01 — HERO (DARK)
+       ══════════════════════════════════════════════════════════════ */
+    #s01 { padding-bottom: var(--space-20); }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: center;
+      min-height: 70vh;
+    }
+
+    .hero-header {
+      font-size: var(--text-xs);
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-10);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .hero-title {
+      font-size: var(--text-hero);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--space-6);
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--brand-400), var(--brand-200));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: var(--text-lg);
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+    }
+    .hero-subtitle strong {
+      color: var(--brand-400);
+      font-weight: 600;
+    }
+
+    /* ── Hero visual — SVG abstrato ────────────────────────── */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 480px;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    .hero-orb--1 {
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(76,175,79,0.2) 0%, transparent 70%);
+      top: 10%; right: 5%;
+    }
+    .hero-orb--2 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(46,125,50,0.25) 0%, transparent 70%);
+      bottom: 15%; left: 10%;
+    }
+
+    .hero-geo {
+      position: relative;
+      width: 340px;
+      height: 340px;
+    }
+    .hero-geo__ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px solid rgba(76,175,79,0.15);
+    }
+    .hero-geo__ring--1 {
+      inset: 0;
+      animation: ring-rotate 20s linear infinite;
+    }
+    .hero-geo__ring--2 {
+      inset: 40px;
+      border-color: rgba(76,175,79,0.25);
+      animation: ring-rotate 15s linear infinite reverse;
+    }
+    .hero-geo__ring--3 {
+      inset: 80px;
+      border-color: rgba(76,175,79,0.4);
+      animation: ring-rotate 10s linear infinite;
+    }
+    .hero-geo__core {
+      position: absolute;
+      inset: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-500), var(--brand-600));
+      box-shadow: 0 0 60px rgba(76,175,79,0.3), 0 0 120px rgba(76,175,79,0.1);
+    }
+    .hero-geo__core::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2) 0%, transparent 60%);
+    }
+
+    /* Dots on rings */
+    .hero-geo__dot {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: var(--brand-400);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(76,175,79,0.6);
+    }
+
+    /* Connector lines SVG */
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    @keyframes ring-rotate {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Floating particles ─────────────────────────────────── */
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--brand-400);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-float 4s ease-in-out infinite;
+    }
+    @keyframes particle-float {
+      0%, 100% { opacity: 0; transform: translateY(0); }
+      50%      { opacity: 0.6; transform: translateY(-40px); }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       S02 — PRODUCT CARDS
+       ══════════════════════════════════════════════════════════════ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-10);
+      perspective: 1000px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94),
+                  box-shadow 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(76,175,79,0.06), transparent 40%);
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .product-card:hover::before { opacity: 1; }
+    .product-card:hover {
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 0 0 1px rgba(76,175,79,0.1);
+    }
+
+    .product-card--wip { border-color: var(--warning-border); }
+    .product-card--wip::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--warning-text) 40%, var(--brand-500) 60%, transparent 100%);
+      background-size: 200% 100%;
+      animation: loading-bar 1.8s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    .product-card__icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover .product-card__icon { transform: scale(1.1); }
+    .product-card__icon--brand {
+      background: linear-gradient(135deg, var(--brand-100), var(--brand-50));
+      color: var(--brand-600);
+      box-shadow: 0 2px 8px rgba(76,175,79,0.12);
+    }
+    .product-card__icon--warning {
+      background: linear-gradient(135deg, var(--warning-bg), #FFF3E0);
+      color: var(--warning-text);
+      box-shadow: 0 2px 8px rgba(245,127,23,0.12);
+    }
+    .product-card__name {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--gray-900);
+      letter-spacing: -0.01em;
+    }
+    .product-card__full-name {
+      font-size: var(--text-xs);
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+    .product-card__desc {
+      font-size: var(--text-base);
+      color: var(--gray-700);
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+    .product-card .wip-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,248,225,0.08);
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       PRODUCT DETAIL SECTIONS (S03–S06)
+       ══════════════════════════════════════════════════════════════ */
+    .section-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: center;
+    }
+
+    /* ── Mockup placeholder ─────────────────────────────────── */
+    .mockup-frame {
+      position: relative;
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      aspect-ratio: 16/10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94),
+                  box-shadow 0.5s ease;
+    }
+    .mockup-frame:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: var(--shadow-lg), 0 0 60px rgba(76,175,79,0.2);
+    }
+    .mockup-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Barra de "navegador" no topo do mockup */
+    .mockup-frame__bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 32px;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 6px;
+      z-index: 2;
+    }
+    .mockup-frame__dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gray-300);
+    }
+    .mockup-frame__dot:first-child { background: #FF5F57; }
+    .mockup-frame__dot:nth-child(2) { background: #FFBD2E; }
+    .mockup-frame__dot:nth-child(3) { background: #28C840; }
+
+    /* Placeholder quando não há screenshot ainda */
+    .mockup-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+      color: var(--gray-400);
+      padding-top: 32px; /* compensar a barra */
+    }
+    .mockup-placeholder svg {
+      width: 48px; height: 48px;
+      opacity: 0.4;
+    }
+    .mockup-placeholder span {
+      font-size: var(--text-xs);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       PILLAR CARDS (S04)
+       ══════════════════════════════════════════════════════════════ */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-10);
+    }
+    .pillar-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      text-align: center;
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94),
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--brand-500), transparent);
+      border-radius: 0 0 2px 2px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .pillar-card:hover::before { opacity: 1; }
+    .pillar-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--brand-200);
+    }
+    .pillar-card__icon {
+      width: 64px; height: 64px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin: 0 auto var(--space-4);
+      transition: transform 0.3s ease;
+    }
+    .pillar-card:hover .pillar-card__icon { transform: scale(1.1) rotate(-3deg); }
+    .pillar-card__title {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: var(--space-2);
+    }
+    .pillar-card__desc {
+      font-size: var(--text-base);
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       KPI CARD (S06)
+       ══════════════════════════════════════════════════════════════ */
+    .kpi-card {
+      background: linear-gradient(135deg, var(--brand-100), var(--white));
+      border: 1px solid var(--brand-200);
+      border-radius: var(--radius-xl);
+      padding: var(--space-10) var(--space-8);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      box-shadow: var(--shadow-glow);
+      transition: transform 0.3s ease;
+    }
+    .kpi-card:hover { transform: scale(1.05); }
+    .kpi-card__number {
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--brand-600);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .kpi-card__label {
+      font-size: var(--text-sm);
+      color: var(--brand-600);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       PROBLEMS LIST (S06)
+       ══════════════════════════════════════════════════════════════ */
+    .problems-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+    .problems-list li {
+      font-size: var(--text-base);
+      color: var(--gray-700);
+      padding-left: var(--space-8);
+      position: relative;
+      line-height: 1.7;
+      transition: transform 0.2s ease;
+    }
+    .problems-list li:hover { transform: translateX(4px); }
+    .problems-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-500), var(--brand-400));
+      box-shadow: 0 0 8px rgba(76,175,79,0.3);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       S07 — CLOSING (DARK)
+       ══════════════════════════════════════════════════════════════ */
+    .closing-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .closing-logo {
+      width: 120px; height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+      position: relative;
+    }
+    .closing-logo::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(76,175,79,0.15) 0%, transparent 70%);
+      animation: logo-pulse 3s ease-in-out infinite;
+    }
+    @keyframes logo-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50%      { transform: scale(1.15); opacity: 1; }
+    }
+
+    .closing-logo svg { width: 100%; height: 100%; position: relative; z-index: 1; }
+
+    .closing-title {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.03em;
+    }
+    .closing-subtitle {
+      font-size: var(--text-lg);
+      color: rgba(255,255,255,0.7);
+      max-width: 500px;
+    }
+    .closing-line {
+      font-size: var(--text-sm);
+      color: rgba(255,255,255,0.4);
+    }
+    .closing-footer {
+      font-size: var(--text-xs);
+      color: rgba(255,255,255,0.2);
+      margin-top: var(--space-10);
+      letter-spacing: 0.05em;
+    }
+
+    /* Decorative gradient orbs no closing */
+    .closing-orbs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .closing-orbs span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+    .closing-orbs span:nth-child(1) {
+      width: 400px; height: 400px;
+      background: rgba(76,175,79,0.08);
+      top: -100px; left: -100px;
+    }
+    .closing-orbs span:nth-child(2) {
+      width: 300px; height: 300px;
+      background: rgba(46,125,50,0.1);
+      bottom: -80px; right: -80px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       NAV LATERAL
+       ══════════════════════════════════════════════════════════════ */
+    .slide-nav {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      z-index: 100;
+    }
+    .nav-dot {
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      position: relative;
+    }
+    .nav-dot::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .nav-dot:hover::before {
+      background: rgba(255,255,255,0.5);
+      transform: scale(1.4);
+    }
+    .nav-dot--active::before {
+      background: var(--brand-500);
+      transform: scale(1.4);
+      box-shadow: 0 0 12px rgba(76,175,79,0.5);
+    }
+    /* Tooltip */
+    .nav-dot::after {
+      content: attr(aria-label);
+      position: absolute;
+      right: 100%;
+      margin-right: 12px;
+      padding: 4px 10px;
+      background: var(--gray-900);
+      color: var(--white);
+      font-size: var(--text-xs);
+      font-family: var(--font-sans);
+      border-radius: var(--radius-md);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform: translateX(4px);
+    }
+    .nav-dot:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Adaptar cor dos dots em seções claras */
+    .slide-nav--light .nav-dot::before { background: rgba(0,0,0,0.15); }
+    .slide-nav--light .nav-dot:hover::before { background: rgba(0,0,0,0.4); }
+    .slide-nav--light .nav-dot--active::before {
+      background: var(--brand-500);
+      box-shadow: 0 0 12px rgba(76,175,79,0.4);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       DIVIDERS BETWEEN SECTIONS
+       ══════════════════════════════════════════════════════════════ */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--gray-200) 50%, transparent 100%);
+      position: relative;
+      z-index: 2;
+    }
+    .section-divider--brand {
+      background: linear-gradient(90deg, transparent 0%, var(--brand-200) 50%, transparent 100%);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       KEYFRAMES
+       ══════════════════════════════════════════════════════════════ */
+    @keyframes loading-bar {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       PARALLAX LAYERS
+       ══════════════════════════════════════════════════════════════ */
+    .parallax-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .parallax-bg span {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       RESPONSIVO
+       ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 1023px) {
+      html { scroll-snap-type: none; }
+      .slide-nav { display: none; }
+      .hero-layout { grid-template-columns: 1fr; text-align: center; }
+      .hero-subtitle { margin: 0 auto; }
+      .hero-visual { height: 300px; }
+      .hero-geo { width: 240px; height: 240px; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-2col { grid-template-columns: 1fr; }
+      .mockup-frame { max-width: 500px; margin: 0 auto; }
+      .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 639px) {
+      .section { padding: var(--space-16) var(--space-4); }
+      .cards-grid { grid-template-columns: 1fr; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .hero-geo { width: 180px; height: 180px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV LATERAL ═══════════════ -->
+<nav class="slide-nav" aria-label="Navegação entre seções">
+  <button class="nav-dot nav-dot--active" data-target="#s01" aria-label="Capa"></button>
+  <button class="nav-dot" data-target="#s02" aria-label="Visão Geral"></button>
+  <button class="nav-dot" data-target="#s03" aria-label="SIPP"></button>
+  <button class="nav-dot" data-target="#s04" aria-label="Watchtower"></button>
+  <button class="nav-dot" data-target="#s05" aria-label="Delphos"></button>
+  <button class="nav-dot" data-target="#s06" aria-label="Novo Portal"></button>
+  <button class="nav-dot" data-target="#s07" aria-label="Encerramento"></button>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S01 — CAPA (DARK)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="s01" class="section section--dark">
+  <div class="section-container">
+    <div class="hero-layout">
+      <div class="hero-text">
+        <p class="hero-header">Governo do Estado de Rondônia &ensp;&middot;&ensp; Secretaria de Estado do Planejamento, Orçamento e Gestão</p>
+        <h1 class="hero-title">
+          SEPOG:<br><span class="highlight">Produtos Estratégicos</span>
+        </h1>
+        <p class="hero-subtitle">
+          <strong>DGEPP</strong> – Diretoria de Gestão Estratégica e Políticas Públicas<br>
+          <strong>GEA</strong> – Gerência de Estudos e Análises Socioeconômicas
+        </p>
+      </div>
+
+      <div class="hero-visual" data-parallax="0.15">
+        <!-- Orbs de fundo -->
+        <div class="hero-orb hero-orb--1"></div>
+        <div class="hero-orb hero-orb--2"></div>
+
+        <!-- Geometria abstrata -->
+        <div class="hero-geo">
+          <div class="hero-geo__ring hero-geo__ring--1"></div>
+          <div class="hero-geo__ring hero-geo__ring--2">
+            <span class="hero-geo__dot" style="top: -3px; left: 50%; transform: translateX(-50%);"></span>
+            <span class="hero-geo__dot" style="bottom: -3px; left: 50%; transform: translateX(-50%);"></span>
+          </div>
+          <div class="hero-geo__ring hero-geo__ring--3">
+            <span class="hero-geo__dot" style="top: 50%; right: -3px; transform: translateY(-50%);"></span>
+            <span class="hero-geo__dot" style="top: 50%; left: -3px; transform: translateY(-50%);"></span>
+          </div>
+          <div class="hero-geo__core"></div>
+
+          <!-- Connector lines -->
+          <svg class="hero-lines" viewBox="0 0 340 340" fill="none">
+            <line x1="170" y1="0" x2="170" y2="340" stroke="rgba(76,175,79,0.06)" stroke-width="1" stroke-dasharray="4 8"/>
+            <line x1="0" y1="170" x2="340" y2="170" stroke="rgba(76,175,79,0.06)" stroke-width="1" stroke-dasharray="4 8"/>
+            <line x1="50" y1="50" x2="290" y2="290" stroke="rgba(76,175,79,0.04)" stroke-width="1" stroke-dasharray="4 8"/>
+            <line x1="290" y1="50" x2="50" y2="290" stroke="rgba(76,175,79,0.04)" stroke-width="1" stroke-dasharray="4 8"/>
+          </svg>
+        </div>
+
+        <!-- Partículas -->
+        <span class="particle" style="top: 20%; left: 15%; animation-delay: 0s;"></span>
+        <span class="particle" style="top: 60%; left: 80%; animation-delay: 1.2s;"></span>
+        <span class="particle" style="top: 75%; left: 30%; animation-delay: 2.5s;"></span>
+        <span class="particle" style="top: 30%; left: 70%; animation-delay: 0.8s;"></span>
+        <span class="particle" style="top: 85%; left: 55%; animation-delay: 1.8s;"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S02 — VISÃO GERAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<section id="s02" class="section section--light-alt">
+  <div class="section-container">
+    <span class="section-eyebrow">Portfólio</span>
+    <h2 class="section-title">Visão Geral dos Produtos</h2>
+    <p class="section-subtitle">Quatro produtos estratégicos que transformam a gestão pública do Estado de Rondônia.</p>
+
+    <div class="cards-grid">
+      <!-- SIPP -->
+      <div class="product-card" data-tilt>
+        <div class="product-card__icon product-card__icon--brand">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="m4.93 4.93 2.83 2.83m8.48 8.48 2.83 2.83m0-17.17-2.83 2.83m-8.48 8.48-2.83 2.83"/></svg>
+        </div>
+        <span class="product-card__name">SIPP</span>
+        <span class="product-card__full-name">Sistema Integrado de Políticas Públicas</span>
+        <p class="product-card__desc">Integra políticas públicas e dados atualizados entre secretarias e os eixos estratégicos do PDES.</p>
+        <span class="badge badge--active">Em operação</span>
+      </div>
+
+      <!-- Watchtower -->
+      <div class="product-card" data-tilt>
+        <div class="product-card__icon product-card__icon--brand">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <span class="product-card__name">Watchtower</span>
+        <span class="product-card__full-name">SIPP Watchtower</span>
+        <p class="product-card__desc">Monitoramento em tempo real e alertas automáticos para a equipe técnica do SIPP.</p>
+        <span class="badge badge--active">Em operação</span>
+      </div>
+
+      <!-- Delphos -->
+      <div class="product-card product-card--wip" data-tilt>
+        <div class="wip-overlay"></div>
+        <div class="product-card__icon product-card__icon--warning">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <span class="product-card__name">Delphos</span>
+        <span class="product-card__full-name">Hub de Dados da GEA</span>
+        <p class="product-card__desc">Centraliza dados socioeconômicos do estado — IBGE, DATASUS, IPEA.</p>
+        <span class="badge badge--wip">Em desenvolvimento</span>
+      </div>
+
+      <!-- Novo Portal -->
+      <div class="product-card product-card--wip" data-tilt>
+        <div class="wip-overlay"></div>
+        <div class="product-card__icon product-card__icon--warning">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <span class="product-card__name">Novo Portal</span>
+        <span class="product-card__full-name">Portal do Observatório de Dados</span>
+        <p class="product-card__desc">Vitrine de dados abertos do Estado de Rondônia — acessível, mobile-first, tempo real.</p>
+        <span class="badge badge--wip">Em desenvolvimento</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S03 — SIPP
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<section id="s03" class="section section--light">
+  <div class="parallax-bg" data-parallax-bg>
+    <span style="width:300px; height:300px; background: radial-gradient(circle, rgba(76,175,79,0.04) 0%, transparent 70%); top:-50px; right:-50px;"></span>
+  </div>
+  <div class="section-container">
+    <span class="section-eyebrow">Produto</span>
+    <h2 class="section-title">SIPP</h2>
+    <p class="section-subtitle">Sistema Integrado de Políticas Públicas</p>
+
+    <div class="section-2col">
+      <div>
+        <div class="content-block">
+          <p class="content-block__label">O que é</p>
+          <p class="content-block__text">Sistema que permite ao Estado de Rondônia enxergar, em um único lugar, o que está sendo feito — e o que está funcionando — em matéria de políticas públicas.</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Problema</p>
+          <p class="content-block__text">Cada secretaria gerencia seus programas e projetos de forma isolada, sem uma visão integrada de como essas ações se conectam às prioridades estratégicas do governo.</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Solução</p>
+          <p class="content-block__text">O SIPP cria uma linha direta entre a execução cotidiana das secretarias e os eixos estratégicos do Plano de Desenvolvimento Estadual Sustentável (PDES).</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Status atual</p>
+          <span class="badge badge--active" style="margin-bottom: 12px;">MVP em operação</span>
+          <p class="content-block__text">Em fase de testes internos na DGEPP, com bom desempenho e melhorias contínuas. Desenvolvido com atenção especial à experiência do usuário para facilitar a adesão das demais secretarias.</p>
+        </div>
+      </div>
+
+      <!-- MOCKUP: substituir src pelo screenshot real do SIPP -->
+      <div class="mockup-frame" data-parallax="0.08">
+        <div class="mockup-frame__bar">
+          <span class="mockup-frame__dot"></span>
+          <span class="mockup-frame__dot"></span>
+          <span class="mockup-frame__dot"></span>
+        </div>
+        <div class="mockup-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 16 5-5 4 4 4-6 5 7"/></svg>
+          <span>Screenshot do SIPP</span>
+        </div>
+        <!-- <img src="assets/sipp-screenshot.png" alt="Interface do SIPP"> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S04 — WATCHTOWER
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section-divider section-divider--brand"></div>
+<section id="s04" class="section section--green-light">
+  <div class="section-container">
+    <span class="section-eyebrow">Produto</span>
+    <h2 class="section-title">SIPP Watchtower</h2>
+    <p class="section-subtitle">Central de sinais vitais do SIPP — monitoramento, desempenho e alertas em tempo real.</p>
+
+    <div class="section-2col">
+      <div>
+        <div class="content-block">
+          <p class="content-block__label">O que é</p>
+          <p class="content-block__text">Ferramenta interna de monitoramento do SIPP, voltada exclusivamente para a equipe técnica. Funciona como uma central de sinais vitais: registra em tempo real acessos, desempenho e eventuais falhas — e alerta automaticamente os desenvolvedores quando algo sai do esperado.</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Problemas resolvidos</p>
+          <p class="content-block__text">Identifica e notifica o problema antes que ele se torne uma reclamação. Reduz o tempo de resposta a falhas e garante maior confiabilidade — fundamental para um sistema que será usado por todas as secretarias do Estado.</p>
+        </div>
+      </div>
+
+      <!-- MOCKUP: substituir src pelo screenshot real do Watchtower -->
+      <div class="mockup-frame" data-parallax="0.08">
+        <div class="mockup-frame__bar">
+          <span class="mockup-frame__dot"></span>
+          <span class="mockup-frame__dot"></span>
+          <span class="mockup-frame__dot"></span>
+        </div>
+        <div class="mockup-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="7 14 11 10 15 13 19 8"/></svg>
+          <span>Screenshot do Watchtower</span>
+        </div>
+        <!-- <img src="assets/watchtower-screenshot.png" alt="Interface do Watchtower"> -->
+      </div>
+    </div>
+
+    <!-- 3 Pilares -->
+    <div class="pillars-grid">
+      <div class="pillar-card" data-tilt>
+        <div class="pillar-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 class="pillar-card__title">Painel de observabilidade</h3>
+        <p class="pillar-card__desc">Interface visual para monitoramento eficaz</p>
+      </div>
+      <div class="pillar-card" data-tilt>
+        <div class="pillar-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="pillar-card__title">Monitoramento em tempo real</h3>
+        <p class="pillar-card__desc">Avaliação contínua de acessos e desempenho</p>
+      </div>
+      <div class="pillar-card" data-tilt>
+        <div class="pillar-card__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <h3 class="pillar-card__title">Alertas automáticos</h3>
+        <p class="pillar-card__desc">Notificações instantâneas para a equipe técnica</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S05 — DELPHOS
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<section id="s05" class="section section--light">
+  <div class="section-container">
+    <span class="section-eyebrow">Produto</span>
+    <h2 class="section-title">
+      Delphos
+      <span class="badge badge--wip" style="margin-left: 12px; vertical-align: middle; font-size: 0.65em;">Em desenvolvimento</span>
+    </h2>
+    <p class="section-subtitle">Hub de Dados da GEA — centralizando a inteligência socioeconômica do estado.</p>
+
+    <div class="section-2col">
+      <div>
+        <div class="content-block">
+          <p class="content-block__label">Contexto</p>
+          <p class="content-block__text">O Estado de Rondônia não possui uma base de dados socioeconômicos centralizada, moderna e amplamente acessível. Os dados existem — mas estão dispersos, em formatos diferentes, gerenciados de formas distintas por cada área.</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Solução</p>
+          <p class="content-block__text">Infraestrutura central que reúne, organiza e disponibiliza informações socioeconômicas e estatísticas para múltiplos usos e públicos: Portal do Observatório, técnicos, pesquisadores e transparência pública.</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Status atual</p>
+          <p class="content-block__text">Planejamento concluído — arquitetura de dados definida e fontes mapeadas. Em fase de ingestão de dados.</p>
+        </div>
+        <div class="chips-row">
+          <span class="chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="14" y="6" width="3" height="12"/></svg>
+            IBGE
+          </span>
+          <span class="chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            DATASUS
+          </span>
+          <span class="chip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            IPEA
+          </span>
+        </div>
+      </div>
+
+      <!-- MOCKUP: substituir pelo visual do Delphos (ou manter abstrato) -->
+      <div class="mockup-frame" data-parallax="0.08">
+        <div class="mockup-frame__bar">
+          <span class="mockup-frame__dot"></span>
+          <span class="mockup-frame__dot"></span>
+          <span class="mockup-frame__dot"></span>
+        </div>
+        <div class="mockup-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <span>Conceito do Delphos</span>
+        </div>
+        <!-- <img src="assets/delphos-concept.png" alt="Conceito visual do Delphos"> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S06 — NOVO PORTAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="section-divider section-divider--brand"></div>
+<section id="s06" class="section section--green-light">
+  <div class="section-container">
+    <span class="section-eyebrow">Produto</span>
+    <h2 class="section-title">
+      Novo Portal do Observatório
+      <span class="badge badge--wip" style="margin-left: 12px; vertical-align: middle; font-size: 0.65em;">Em desenvolvimento</span>
+    </h2>
+    <p class="section-subtitle">Vitrine de dados abertos do Estado — acessível, moderna e em tempo real.</p>
+
+    <div class="section-2col">
+      <div>
+        <div class="content-block">
+          <p class="content-block__label">Contexto</p>
+          <p class="content-block__text">O Portal do Observatório existe, mas não cumpre seu propósito. A plataforma atual foi construída em tecnologia defasada, não funciona em dispositivos móveis, não permite publicação de conteúdos dinâmicos e exibe dados de forma estática.</p>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Problemas a resolver</p>
+          <ol class="problems-list">
+            <li>Acesso a dados públicos para todos os cidadãos</li>
+            <li>Inteligência de negócio integrada</li>
+            <li>Atualizações em tempo real com dados precisos</li>
+            <li>Melhorias na experiência do usuário</li>
+          </ol>
+        </div>
+        <div class="content-block">
+          <p class="content-block__label">Status atual</p>
+          <p class="content-block__text">Redesenho previsto em até 5 meses, com entregas orientadas à melhoria da experiência do usuário, confiabilidade das informações e adequação aos padrões modernos de transparência pública.</p>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-8);">
+        <div class="kpi-card">
+          <span class="kpi-card__number" data-count="5">5</span>
+          <span class="kpi-card__label">meses</span>
+        </div>
+        <p style="font-size: var(--text-xs); color: var(--gray-500); text-align: center; max-width: 240px; line-height: 1.5;">Prazo previsto de entrega — padrões IBGE e portais de transparência pública</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     S07 — ENCERRAMENTO (DARK)
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="s07" class="section section--dark">
+  <div class="closing-orbs">
+    <span></span>
+    <span></span>
+  </div>
+  <div class="section-container">
+    <div class="closing-content">
+      <div class="closing-logo" data-parallax="0.1">
+        <!-- LOGO: substituir pelo logo real da GEA -->
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 10 L105 35 L105 85 L60 110 L15 85 L15 35 Z" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+          <path d="M60 25 L90 42 L90 78 L60 95 L30 78 L30 42 Z" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+          <path d="M60 40 L75 49 L75 71 L60 80 L45 71 L45 49 Z" fill="none" stroke="rgba(76,175,79,0.5)" stroke-width="1.5"/>
+          <circle cx="60" cy="60" r="8" fill="rgba(76,175,79,0.3)" stroke="var(--brand-400)" stroke-width="1.5"/>
+          <circle cx="60" cy="60" r="3" fill="var(--brand-400)"/>
+          <!-- Connector lines -->
+          <line x1="60" y1="10" x2="60" y2="110" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="15" y1="35" x2="105" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="105" y1="35" x2="15" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        </svg>
+        <!-- <img src="assets/logo-gea.svg" alt="Logo GEA"> -->
+      </div>
+
+      <h2 class="closing-title">GEA</h2>
+      <p class="closing-subtitle">Gerência de Estudos e Análises Socioeconômicas</p>
+      <p class="closing-line">DGEPP — Diretoria de Gestão Estratégica e Políticas Públicas</p>
+      <p class="closing-line">SEPOG — Secretaria de Estado do Planejamento, Orçamento e Gestão</p>
+      <p class="closing-footer">Governo do Estado de Rondônia &middot; 2026</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════════ -->
+<script src="ANIMATIONS.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ── GSAP Init ─────────────────────────────────────────────
+  if (window.Animations) {
+    Animations.init();
+  }
+
+  // ── Nav dots: click to scroll ─────────────────────────────
+  document.querySelectorAll(".nav-dot").forEach(dot => {
+    dot.addEventListener("click", () => {
+      const target = dot.dataset.target;
+      if (window.Animations) {
+        Animations.scrollToSection(target);
+      } else {
+        document.querySelector(target).scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  });
+
+  // ── Nav dots: adapt color based on section background ─────
+  if (typeof ScrollTrigger !== "undefined") {
+    const nav = document.querySelector(".slide-nav");
+    const lightSections = document.querySelectorAll(".section--light, .section--light-alt, .section--green-light");
+    lightSections.forEach(sec => {
+      ScrollTrigger.create({
+        trigger: sec,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => nav.classList.add("slide-nav--light"),
+        onLeave: () => nav.classList.remove("slide-nav--light"),
+        onEnterBack: () => nav.classList.add("slide-nav--light"),
+        onLeaveBack: () => nav.classList.remove("slide-nav--light"),
+      });
+    });
+  }
+
+  // ── 3D Tilt effect on cards ───────────────────────────────
+  document.querySelectorAll("[data-tilt]").forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = (y - centerY) / centerY * -4;
+      const rotateY = (x - centerX) / centerX * 4;
+
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      card.style.setProperty("--mouse-x", x + "px");
+      card.style.setProperty("--mouse-y", y + "px");
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+    });
+  });
+
+  // ── Parallax on scroll ────────────────────────────────────
+  if (typeof gsap !== "undefined") {
+    document.querySelectorAll("[data-parallax]").forEach(el => {
+      const speed = parseFloat(el.dataset.parallax) || 0.1;
+      gsap.to(el, {
+        y: () => ScrollTrigger.maxScroll(window) * speed * -0.3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el.closest(".section"),
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+          invalidateOnRefresh: true,
+        },
+      });
+    });
+
+    // Cinematic section fade-in
+    document.querySelectorAll(".section").forEach(sec => {
+      gsap.from(sec.querySelector(".section-container"), {
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sec,
+          start: "top 80%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+    });
+  }
+
+  // ── Counter animation (KPI) ───────────────────────────────
+  document.querySelectorAll("[data-count]").forEach(el => {
+    const target = parseInt(el.dataset.count);
+    if (typeof ScrollTrigger !== "undefined") {
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          gsap.from(el, {
+            textContent: 0,
+            duration: 1.5,
+            ease: "power2.out",
+            snap: { textContent: 1 },
+          });
+        },
+      });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

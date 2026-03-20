@@ -1,0 +1,10 @@
+# Assets (adicione quando tiver os arquivos)
+assets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
