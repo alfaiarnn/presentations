@@ -1,0 +1,107 @@
+---
+import ContentBlock from '../components/ContentBlock.astro';
+import MockupFrame from '../components/MockupFrame.astro';
+import PillarCard from '../components/PillarCard.astro';
+import Chip from '../components/Chip.astro';
+import Badge from '../components/Badge.astro';
+
+interface ContentBlockData {
+  label: string;
+  text: string;
+  badge?: { text: 'Em operação' | 'Em desenvolvimento'; variant: 'active' | 'wip' };
+}
+
+interface Props {
+  id: string;
+  theme: string;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  contentBlocks: ContentBlockData[];
+  mockupAlt?: string;
+  mockupSrc?: string;
+  pillars?: { title: string; description: string; icon?: string }[];
+  chips?: { label: string; icon?: string }[];
+  problemsList?: string[];
+  kpi?: { value: number; label: string; caption?: string };
+  divider?: string;
+  titleBadge?: { text: 'Em operação' | 'Em desenvolvimento'; variant: 'active' | 'wip' };
+}
+
+const { id, theme, eyebrow, title, subtitle, contentBlocks, mockupAlt, mockupSrc, pillars, chips, kpi, divider, titleBadge, problemsList } = Astro.props;
+
+// Determine mockup placeholder icon based on slide content
+const placeholderIcon = pillars ? 'chart' : chips ? 'database' : 'default';
+---
+
+{divider && <div class={`section-divider${divider === 'brand' ? ' section-divider--brand' : ''}`}></div>}
+<section id={id} class={`section section--${theme}`}>
+  {theme === 'light' && (
+    <div class="parallax-bg" data-parallax-bg>
+      <span style="width:300px; height:300px; background: radial-gradient(circle, rgba(76,175,79,0.04) 0%, transparent 70%); top:-50px; right:-50px;"></span>
+    </div>
+  )}
+  <div class="section-container">
+    <span class="section-eyebrow">{eyebrow}</span>
+    <h2 class="section-title">
+      {title}
+      {titleBadge && (
+        <span style="margin-left: 12px; vertical-align: middle; font-size: 0.65em;">
+          <Badge text={titleBadge.text} variant={titleBadge.variant} />
+        </span>
+      )}
+    </h2>
+    <p class="section-subtitle">{subtitle}</p>
+
+    <div class="section-2col">
+      <div>
+        {contentBlocks.map((block) => (
+          <ContentBlock
+            label={block.label}
+            text={block.text}
+            badge={block.badge}
+            problemsList={block.label === 'Desafio' && problemsList ? problemsList : undefined}
+          />
+        ))}
+
+        {chips && chips.length > 0 && (
+          <div class="chips-row">
+            {chips.map((chip) => (
+              <Chip label={chip.label} icon={chip.icon} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {kpi ? (
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-8);">
+          <div class="kpi-card">
+            <span class="kpi-card__number" data-count={kpi.value}>{kpi.value}</span>
+            <span class="kpi-card__label">{kpi.label}</span>
+          </div>
+          {kpi.caption && (
+            <p style="font-size: var(--text-xs); color: var(--gray-500); text-align: center; max-width: 240px; line-height: 1.5;">{kpi.caption}</p>
+          )}
+        </div>
+      ) : (
+        <MockupFrame
+          alt={mockupAlt || title}
+          src={mockupSrc}
+          placeholderIcon={placeholderIcon}
+        />
+      )}
+    </div>
+
+    {pillars && pillars.length > 0 && (
+      <div class="pillars-grid">
+        {pillars.map((pillar) => (
+          <PillarCard
+            title={pillar.title}
+            description={pillar.description}
+            icon={pillar.icon}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+</section>

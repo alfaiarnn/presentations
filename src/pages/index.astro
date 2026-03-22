@@ -1,0 +1,125 @@
+---
+// SEPOG: Produtos Estratégicos — Registro e ordenação dos slides
+// A ordem é definida pelo campo "order" nos YAML files em src/content/slides/
+import { getCollection } from 'astro:content';
+import SlideHero from '../layouts/SlideHero.astro';
+import SlideOverviewGrid from '../layouts/SlideOverviewGrid.astro';
+import SlideProductDetail from '../layouts/SlideProductDetail.astro';
+import SlideContext from '../layouts/SlideContext.astro';
+import SlideClosing from '../layouts/SlideClosing.astro';
+import SlideNav from '../components/SlideNav.astro';
+
+const allSlides = await getCollection('slides');
+const slides = allSlides.sort((a, b) => a.data.order - b.data.order);
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEPOG: Produtos Estratégicos</title>
+    <meta name="description" content="Apresentação institucional dos produtos estratégicos da SEPOG — DGEPP/GEA, Governo de Rondônia." />
+    <meta property="og:title" content="SEPOG: Produtos Estratégicos" />
+    <meta property="og:description" content="Quatro produtos digitais que transformam a gestão pública de Rondônia." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Ir para conteúdo principal</a>
+
+    <SlideNav slides={slides.map(s => ({ id: s.data.id, label: s.data.navLabel }))} />
+
+    <main id="main">
+      {slides.map((slide) => {
+        const d = slide.data;
+
+        if (d.layout === 'SlideHero') {
+          return (
+            <SlideHero
+              id={d.id}
+              heroHeader={d.heroHeader!}
+              title={d.title}
+              highlightedTitle={d.highlightedTitle!}
+              subtitle={d.subtitle!}
+            />
+          );
+        }
+
+        if (d.layout === 'SlideOverviewGrid') {
+          return (
+            <SlideOverviewGrid
+              id={d.id}
+              theme={d.theme}
+              eyebrow={d.eyebrow!}
+              title={d.title}
+              subtitle={d.subtitle!}
+              products={d.products!}
+              divider={d.divider}
+            />
+          );
+        }
+
+        if (d.layout === 'SlideProductDetail') {
+          return (
+            <SlideProductDetail
+              id={d.id}
+              theme={d.theme}
+              eyebrow={d.eyebrow!}
+              title={d.title}
+              subtitle={d.subtitle!}
+              contentBlocks={d.contentBlocks!}
+              mockupAlt={d.mockupAlt}
+              mockupSrc={d.mockupSrc}
+              pillars={d.pillars}
+              chips={d.chips}
+              problemsList={d.problemsList}
+              kpi={d.kpi}
+              divider={d.divider}
+            />
+          );
+        }
+
+        if (d.layout === 'SlideContext') {
+          return (
+            <SlideContext
+              id={d.id}
+              theme={d.theme}
+              eyebrow={d.eyebrow!}
+              title={d.title}
+              subtitle={d.subtitle}
+              items={d.contextItems!}
+              divider={d.divider}
+            />
+          );
+        }
+
+        if (d.layout === 'SlideClosing') {
+          return (
+            <SlideClosing
+              id={d.id}
+              closingTitle={d.closingTitle!}
+              closingSubtitle={d.closingSubtitle!}
+              closingLines={d.closingLines!}
+              closingFooter={d.closingFooter!}
+              cta={d.cta}
+            />
+          );
+        }
+
+        return null;
+      })}
+    </main>
+
+    <script>
+      import { initAnimations } from '../scripts/animations';
+      initAnimations();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+order: 8
+id: s09
+layout: SlideClosing
+theme: dark
+navLabel: Próximos Passos
+
+title: Próximos Passos
+closingTitle: Como participar
+closingSubtitle: Conheça os produtos e integre sua secretaria ao ecossistema digital da SEPOG.
+
+cta:
+  label: "O que você pode fazer agora:"
+  items:
+    - text: Solicitar integração da sua secretaria ao SIPP
+    - text: Agendar uma demonstração com a equipe da GEA
+    - text: Acessar a documentação técnica dos produtos
+
+closingLines:
+  - "Contato: gea@sepog.ro.gov.br"
+closingFooter: ""

@@ -1,0 +1,29 @@
+order: 4
+id: s03
+layout: SlideProductDetail
+theme: light
+navLabel: SIPP
+divider: default
+
+eyebrow: Produto
+title: SIPP
+subtitle: Sistema Integrado de Políticas Públicas
+
+contentBlocks:
+  - label: "O que é"
+    text: Sistema que permite ao Estado de Rondônia enxergar, em um único lugar, o que está sendo feito — e o que está funcionando — em matéria de políticas públicas.
+
+  - label: "Desafio"
+    text: Cada secretaria gerencia seus programas e projetos de forma isolada, sem uma visão integrada de como essas ações se conectam às prioridades estratégicas do governo.
+
+  - label: "Solução"
+    text: O SIPP cria uma linha direta entre a execução cotidiana das secretarias e os eixos estratégicos do Plano de Desenvolvimento Estadual Sustentável (PDES).
+
+  - label: "Status atual"
+    text: Em fase de testes internos na DGEPP, com bom desempenho e melhorias contínuas. Desenvolvido com atenção especial à experiência do usuário para facilitar a adesão das demais secretarias.
+    badge:
+      text: Em operação
+      variant: active
+
+mockupAlt: Interface do SIPP
+# mockupSrc: assets/sipp-screenshot.png

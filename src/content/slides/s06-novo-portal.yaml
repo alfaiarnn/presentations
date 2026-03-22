@@ -1,0 +1,39 @@
+order: 7
+id: s06
+layout: SlideProductDetail
+theme: green-light
+navLabel: Novo Portal
+divider: brand
+
+eyebrow: Produto
+title: Novo Portal do Observatório
+subtitle: "Vitrine de dados abertos do Estado — acessível, moderna e em tempo real."
+
+contentBlocks:
+  - label: "O que é"
+    text: Nova versão do Portal do Observatório de Dados — uma vitrine pública, acessível e moderna para os dados socioeconômicos do Estado de Rondônia, alimentada pelo Delphos.
+
+  - label: "Desafio"
+    text: A plataforma atual foi construída em tecnologia defasada, não funciona em dispositivos móveis, não permite publicação de conteúdos dinâmicos e exibe dados de forma estática.
+
+  - label: "Solução"
+    text: Redesenho completo com foco em acessibilidade, responsividade mobile-first e atualização em tempo real — alinhado aos padrões modernos de transparência pública.
+
+  - label: "Status atual"
+    text: Redesenho previsto em até 5 meses, com entregas orientadas à melhoria da experiência do usuário, confiabilidade das informações e adequação aos padrões modernos de transparência pública.
+    badge:
+      text: Em desenvolvimento
+      variant: wip
+
+problemsList:
+  - Acesso a dados públicos para todos os cidadãos
+  - Inteligência de negócio integrada
+  - Atualizações em tempo real com dados precisos
+
+kpi:
+  value: 5
+  label: meses
+  caption: "Prazo previsto de entrega — padrões IBGE e portais de transparência pública"
+
+# mockupSrc: assets/portal-concept.png
+mockupAlt: Conceito do Novo Portal

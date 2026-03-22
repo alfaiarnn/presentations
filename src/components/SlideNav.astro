@@ -1,0 +1,22 @@
+---
+interface SlideInfo {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  slides: SlideInfo[];
+}
+
+const { slides } = Astro.props;
+---
+
+<nav class="slide-nav" aria-label="Navegação entre seções">
+  {slides.map((slide, i) => (
+    <button
+      class={`nav-dot${i === 0 ? ' nav-dot--active' : ''}`}
+      data-target={`#${slide.id}`}
+      aria-label={slide.label}
+    ></button>
+  ))}
+</nav>

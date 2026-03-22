@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Astro Dev Server",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "npm run dev"],
+      "port": 4321
+    },
+    {
+      "name": "Astro Preview (build)",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": ["/c", "npm run preview"],
+      "port": 4321
+    }
+  ]
+}

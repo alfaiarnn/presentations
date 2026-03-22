@@ -1,0 +1,37 @@
+order: 6
+id: s05
+layout: SlideProductDetail
+theme: light
+navLabel: Delphos
+divider: default
+
+eyebrow: Produto
+title: Delphos
+subtitle: "Hub de Dados da GEA — centralizando a inteligência socioeconômica do estado."
+
+contentBlocks:
+  - label: "O que é"
+    text: Infraestrutura central de dados que reúne, organiza e disponibiliza informações socioeconômicas e estatísticas do Estado de Rondônia para múltiplos usos e públicos.
+
+  - label: "Desafio"
+    text: O Estado não possui uma base de dados socioeconômicos centralizada, moderna e amplamente acessível. Os dados existem — mas estão dispersos, em formatos diferentes, gerenciados de formas distintas por cada área.
+
+  - label: "Solução"
+    text: O Delphos centraliza dados de fontes como IBGE, DATASUS e IPEA em uma plataforma única, alimentando o Portal do Observatório, técnicos, pesquisadores e a transparência pública.
+
+  - label: "Status atual"
+    text: Planejamento concluído — arquitetura de dados definida e fontes mapeadas. Em fase de ingestão de dados.
+    badge:
+      text: Em desenvolvimento
+      variant: wip
+
+chips:
+  - label: IBGE
+    icon: bar-chart
+  - label: DATASUS
+    icon: activity
+  - label: IPEA
+    icon: trending-up
+
+mockupAlt: Conceito do Delphos
+# mockupSrc: assets/delphos-concept.png

@@ -1,0 +1,39 @@
+order: 3
+id: s02
+layout: SlideOverviewGrid
+theme: light-alt
+navLabel: Visão Geral
+divider: default
+
+eyebrow: Portfólio
+title: Visão Geral dos Produtos
+subtitle: Quatro produtos estratégicos que transformam a gestão pública do Estado de Rondônia.
+
+products:
+  - name: SIPP
+    fullName: Sistema Integrado de Políticas Públicas
+    description: Integra políticas públicas e dados atualizados entre secretarias e os eixos estratégicos do PDES.
+    status: active
+    badgeText: Em operação
+    icon: crosshair
+
+  - name: Watchtower
+    fullName: SIPP Watchtower
+    description: Monitoramento em tempo real e alertas automáticos para a equipe técnica do SIPP.
+    status: active
+    badgeText: Em operação
+    icon: eye
+
+  - name: Delphos
+    fullName: Hub de Dados da GEA
+    description: Centraliza dados socioeconômicos do estado — IBGE, DATASUS, IPEA.
+    status: wip
+    badgeText: Em desenvolvimento
+    icon: database
+
+  - name: Novo Portal
+    fullName: Portal do Observatório de Dados
+    description: Vitrine de dados abertos do Estado de Rondônia — acessível, mobile-first, tempo real.
+    status: wip
+    badgeText: Em desenvolvimento
+    icon: globe

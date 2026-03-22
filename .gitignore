@@ -1,3 +1,7 @@
+# Build
+dist/
+node_modules/
+
 # Assets (adicione quando tiver os arquivos)
 assets/
 
@@ -8,3 +12,8 @@ Thumbs.db
 # Editor
 .vscode/
 *.swp
+
+# Env
+.env
+.env.*
+.astro/

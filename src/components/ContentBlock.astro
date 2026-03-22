@@ -1,0 +1,33 @@
+---
+import Badge from './Badge.astro';
+
+interface Props {
+  label: string;
+  text: string;
+  badge?: {
+    text: 'Em operação' | 'Em desenvolvimento';
+    variant: 'active' | 'wip';
+  };
+  problemsList?: string[];
+}
+
+const { label, text, badge, problemsList } = Astro.props;
+---
+
+<div class="content-block">
+  <p class="content-block__label">{label}</p>
+
+  {badge && (
+    <Badge text={badge.text} variant={badge.variant} />
+  )}
+
+  <p class="content-block__text">{text}</p>
+
+  {problemsList && problemsList.length > 0 && (
+    <ol class="problems-list">
+      {problemsList.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ol>
+  )}
+</div>

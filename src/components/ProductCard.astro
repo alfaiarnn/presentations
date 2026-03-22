@@ -1,0 +1,43 @@
+---
+import Badge from './Badge.astro';
+
+interface Props {
+  name: string;
+  fullName: string;
+  description: string;
+  status: 'active' | 'wip';
+  badgeText: 'Em operação' | 'Em desenvolvimento';
+  icon?: string;
+}
+
+const { name, fullName, description, status, badgeText, icon } = Astro.props;
+
+const isWip = status === 'wip';
+const cardClass = `product-card${isWip ? ' product-card--wip' : ''}`;
+const iconClass = `product-card__icon product-card__icon--${isWip ? 'warning' : 'brand'}`;
+
+// Icon SVG paths mapped by name
+const icons: Record<string, string> = {
+  crosshair: '<circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="m4.93 4.93 2.83 2.83m8.48 8.48 2.83 2.83m0-17.17-2.83 2.83m-8.48 8.48-2.83 2.83"/>',
+  eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+};
+
+const svgContent = icon && icons[icon] ? icons[icon] : '';
+---
+
+<div class={cardClass}>
+  {isWip && <div class="wip-overlay"></div>}
+
+  {svgContent && (
+    <div class={iconClass}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={svgContent} />
+    </div>
+  )}
+
+  <span class="product-card__name">{name}</span>
+  <span class="product-card__full-name">{fullName}</span>
+  <p class="product-card__desc">{description}</p>
+  <Badge text={badgeText} variant={isWip ? 'wip' : 'active'} />
+</div>

@@ -1,0 +1,57 @@
+---
+interface Props {
+  id: string;
+  closingTitle: string;
+  closingSubtitle: string;
+  closingLines: string[];
+  closingFooter: string;
+  cta?: {
+    label: string;
+    items: { text: string; icon?: string }[];
+  };
+}
+
+const { id, closingTitle, closingSubtitle, closingLines, closingFooter, cta } = Astro.props;
+---
+
+<section id={id} class="section section--dark">
+  <div class="closing-orbs">
+    <span></span>
+    <span></span>
+  </div>
+  <div class="section-container">
+    <div class="closing-content">
+      <div class="closing-logo" data-parallax="0.1">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 10 L105 35 L105 85 L60 110 L15 85 L15 35 Z" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+          <path d="M60 25 L90 42 L90 78 L60 95 L30 78 L30 42 Z" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+          <path d="M60 40 L75 49 L75 71 L60 80 L45 71 L45 49 Z" fill="none" stroke="rgba(76,175,79,0.5)" stroke-width="1.5"/>
+          <circle cx="60" cy="60" r="8" fill="rgba(76,175,79,0.3)" stroke="var(--brand-400)" stroke-width="1.5"/>
+          <circle cx="60" cy="60" r="3" fill="var(--brand-400)"/>
+          <line x1="60" y1="10" x2="60" y2="110" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="15" y1="35" x2="105" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+          <line x1="105" y1="35" x2="15" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <h2 class="closing-title">{closingTitle}</h2>
+      <p class="closing-subtitle">{closingSubtitle}</p>
+
+      {cta && (
+        <div class="closing-cta">
+          <p class="closing-cta__label">{cta.label}</p>
+          <div class="closing-cta__items">
+            {cta.items.map((item) => (
+              <span class="closing-cta__item">{item.text}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {closingLines.map((line) => (
+        <p class="closing-line">{line}</p>
+      ))}
+      <p class="closing-footer">{closingFooter}</p>
+    </div>
+  </div>
+</section>

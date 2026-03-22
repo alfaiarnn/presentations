@@ -1,0 +1,51 @@
+---
+interface ContextItem {
+  icon?: string;
+  title: string;
+  text: string;
+}
+
+interface Props {
+  id: string;
+  theme: string;
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  items: ContextItem[];
+  divider?: string;
+}
+
+const { id, theme, eyebrow, title, subtitle, items, divider } = Astro.props;
+
+const icons: Record<string, string> = {
+  'puzzle': '<path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.315 8.685a.98.98 0 0 1 .837-.276c.47.07.802.48.968.925a2.501 2.501 0 1 0 3.214-3.214c-.446-.166-.855-.497-.925-.968a.979.979 0 0 1 .276-.837l1.61-1.61a2.404 2.404 0 0 1 1.705-.707c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/>',
+  'scatter': '<circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="12" r="1.5"/>',
+  'eye-off': '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/>',
+};
+---
+
+{divider && <div class={`section-divider${divider === 'brand' ? ' section-divider--brand' : ''}`}></div>}
+<section id={id} class={`section section--${theme}`}>
+  <div class="section-container">
+    <span class="section-eyebrow">{eyebrow}</span>
+    <h2 class="section-title">{title}</h2>
+    {subtitle && <p class="section-subtitle">{subtitle}</p>}
+
+    <div class="context-grid">
+      {items.map((item) => {
+        const svgContent = item.icon && icons[item.icon] ? icons[item.icon] : null;
+        return (
+          <div class="context-card">
+            {svgContent && (
+              <div class="context-card__icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--brand-500)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={svgContent} />
+              </div>
+            )}
+            <h3 class="context-card__title">{item.title}</h3>
+            <p class="context-card__text">{item.text}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

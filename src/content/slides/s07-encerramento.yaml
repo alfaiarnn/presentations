@@ -1,0 +1,13 @@
+order: 9
+id: s07
+layout: SlideClosing
+theme: dark
+navLabel: Encerramento
+
+title: GEA
+closingTitle: GEA
+closingSubtitle: Gerência de Estudos e Análises Socioeconômicas
+closingLines:
+  - "DGEPP — Diretoria de Gestão Estratégica e Políticas Públicas"
+  - "SEPOG — Secretaria de Estado do Planejamento, Orçamento e Gestão"
+closingFooter: "Governo do Estado de Rondônia · 2026"

@@ -1,0 +1,42 @@
+order: 5
+id: s04
+layout: SlideProductDetail
+theme: green-light
+navLabel: Watchtower
+divider: brand
+
+eyebrow: Produto
+title: SIPP Watchtower
+subtitle: "Central de sinais vitais do SIPP — monitoramento, desempenho e alertas em tempo real."
+
+contentBlocks:
+  - label: "O que é"
+    text: Ferramenta interna de monitoramento do SIPP, voltada exclusivamente para a equipe técnica. Funciona como uma central de sinais vitais — registra em tempo real acessos, desempenho e eventuais falhas, e alerta automaticamente os desenvolvedores quando algo sai do esperado.
+
+  - label: "Desafio"
+    text: Identificar e notificar problemas antes que se tornem reclamações. Reduzir o tempo de resposta a falhas e garantir maior confiabilidade — fundamental para um sistema que será usado por todas as secretarias do Estado.
+
+  - label: "Solução"
+    text: Painel centralizado que reúne métricas de uso, desempenho e disponibilidade do SIPP, com alertas automáticos por e-mail e integração direta com a equipe de desenvolvimento.
+
+  - label: "Status atual"
+    text: Em operação junto ao SIPP, monitorando acessos e desempenho em tempo real. Melhorias contínuas baseadas nos dados coletados.
+    badge:
+      text: Em operação
+      variant: active
+
+pillars:
+  - title: Painel de monitoramento
+    description: Interface visual para monitoramento eficaz
+    icon: monitor
+
+  - title: Monitoramento em tempo real
+    description: Avaliação contínua de acessos e desempenho
+    icon: activity
+
+  - title: Alertas automáticos
+    description: Notificações instantâneas para a equipe técnica
+    icon: bell
+
+mockupAlt: Interface do Watchtower
+# mockupSrc: assets/watchtower-screenshot.png

@@ -1,0 +1,71 @@
+---
+interface Props {
+  id: string;
+  heroHeader: string;
+  title: string;
+  highlightedTitle: string;
+  subtitle: string;
+}
+
+const { id, heroHeader, title, highlightedTitle, subtitle } = Astro.props;
+
+// Parse markdown bold (**text**) in subtitle
+const subtitleLines = subtitle.trim().split('\n').filter(l => l.trim());
+---
+
+<section id={id} class="section section--dark">
+  <div class="section-container">
+    <div class="hero-layout">
+      <div class="hero-text">
+        <p class="hero-header">{heroHeader}</p>
+        <h1 class="hero-title">
+          {title}<br><span class="highlight">{highlightedTitle}</span>
+        </h1>
+        <p class="hero-subtitle">
+          {subtitleLines.map((line, i) => {
+            const parts = line.trim().split(/\*\*(.*?)\*\*/g);
+            return (
+              <>
+                {i > 0 && <br />}
+                {parts.map((part, j) =>
+                  j % 2 === 1 ? <strong>{part}</strong> : part
+                )}
+              </>
+            );
+          })}
+        </p>
+      </div>
+
+      <div class="hero-visual" data-parallax="0.15">
+        <div class="hero-orb hero-orb--1"></div>
+        <div class="hero-orb hero-orb--2"></div>
+
+        <div class="hero-geo">
+          <div class="hero-geo__ring hero-geo__ring--1"></div>
+          <div class="hero-geo__ring hero-geo__ring--2">
+            <span class="hero-geo__dot" style="top: -3px; left: 50%; transform: translateX(-50%);"></span>
+            <span class="hero-geo__dot" style="bottom: -3px; left: 50%; transform: translateX(-50%);"></span>
+          </div>
+          <div class="hero-geo__ring hero-geo__ring--3">
+            <span class="hero-geo__dot" style="top: 50%; right: -3px; transform: translateY(-50%);"></span>
+            <span class="hero-geo__dot" style="top: 50%; left: -3px; transform: translateY(-50%);"></span>
+          </div>
+          <div class="hero-geo__core"></div>
+
+          <svg class="hero-lines" viewBox="0 0 340 340" fill="none">
+            <line x1="170" y1="0" x2="170" y2="340" stroke="rgba(76,175,79,0.06)" stroke-width="1" stroke-dasharray="4 8"/>
+            <line x1="0" y1="170" x2="340" y2="170" stroke="rgba(76,175,79,0.06)" stroke-width="1" stroke-dasharray="4 8"/>
+            <line x1="50" y1="50" x2="290" y2="290" stroke="rgba(76,175,79,0.04)" stroke-width="1" stroke-dasharray="4 8"/>
+            <line x1="290" y1="50" x2="50" y2="290" stroke="rgba(76,175,79,0.04)" stroke-width="1" stroke-dasharray="4 8"/>
+          </svg>
+        </div>
+
+        <span class="particle" style="top: 20%; left: 15%; animation-delay: 0s;"></span>
+        <span class="particle" style="top: 60%; left: 80%; animation-delay: 1.2s;"></span>
+        <span class="particle" style="top: 75%; left: 30%; animation-delay: 2.5s;"></span>
+        <span class="particle" style="top: 30%; left: 70%; animation-delay: 0.8s;"></span>
+        <span class="particle" style="top: 85%; left: 55%; animation-delay: 1.8s;"></span>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+order: 2
+id: s08
+layout: SlideContext
+theme: light
+navLabel: Contexto
+divider: default
+
+eyebrow: Por que estamos aqui
+title: O cenário que motivou esses produtos
+subtitle: Três desafios concretos que o Estado de Rondônia enfrenta na gestão pública — e que nossos produtos resolvem.
+
+contextItems:
+  - icon: puzzle
+    title: Gestão fragmentada
+    text: Cada secretaria gerencia seus programas de forma isolada. Não existe uma visão integrada de como as ações se conectam às prioridades estratégicas do governo.
+
+  - icon: scatter
+    title: Dados dispersos
+    text: Informações socioeconômicas estão espalhadas em sistemas diferentes, formatos incompatíveis e bases desatualizadas — dificultando análises e decisões baseadas em evidências.
+
+  - icon: eye-off
+    title: Falta de transparência acessível
+    text: O portal de dados do Estado existe, mas não funciona em dispositivos móveis, não atualiza em tempo real e não atende aos padrões modernos de transparência pública.
