@@ -2,9 +2,6 @@
 dist/
 node_modules/
 
-# Assets (adicione quando tiver os arquivos)
-assets/
-
 # OS
 .DS_Store
 Thumbs.db

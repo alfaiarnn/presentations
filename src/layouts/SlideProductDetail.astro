@@ -32,6 +32,10 @@ const { id, theme, eyebrow, title, subtitle, contentBlocks, mockupAlt, mockupSrc
 
 // Determine mockup placeholder icon based on slide content
 const placeholderIcon = pillars ? 'chart' : chips ? 'database' : 'default';
+
+// Resolve mockup src with base URL (handles base path in production/GitHub Pages)
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const resolvedMockupSrc = mockupSrc ? `${base}/${mockupSrc.replace(/^\//, '')}` : undefined;
 ---
 
 {divider && <div class={`section-divider${divider === 'brand' ? ' section-divider--brand' : ''}`}></div>}
@@ -86,7 +90,7 @@ const placeholderIcon = pillars ? 'chart' : chips ? 'database' : 'default';
       ) : (
         <MockupFrame
           alt={mockupAlt || title}
-          src={mockupSrc}
+          src={resolvedMockupSrc}
           placeholderIcon={placeholderIcon}
         />
       )}

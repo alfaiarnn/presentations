@@ -537,7 +537,7 @@
     /* ── Mockup placeholder ─────────────────────────────────── */
     .mockup-frame {
       position: relative;
-      border-radius: var(--radius-2xl);
+      border-radius: var(--radius-lg);
       overflow: hidden;
       background: var(--gray-100);
       border: 1px solid var(--gray-200);
@@ -556,8 +556,9 @@
     .mockup-frame img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
+      padding-top: 32px;
     }
     /* Barra de "navegador" no topo do mockup */
     .mockup-frame__bar {
