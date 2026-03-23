@@ -246,6 +246,186 @@ function initNavDots() {
   }
 }
 
+// ── Helper: rgba string → hex (with optional alpha) ─────────
+const rgbaToHex = (rgba: string, alpha?: number): string => {
+  if (rgba.startsWith('#')) return rgba;
+  const parts = rgba.match(/\d+/g);
+  if (!parts || parts.length < 3) return rgba;
+  const r = parseInt(parts[0]).toString(16).padStart(2, '0');
+  const g = parseInt(parts[1]).toString(16).padStart(2, '0');
+  const b = parseInt(parts[2]).toString(16).padStart(2, '0');
+  const a = alpha ? Math.round(alpha * 255).toString(16).padStart(2, '0') : '';
+  return `#${r}${g}${b}${a}`;
+};
+
+// ── Delphos cinematic animation ──────────────────────────────
+export function initDelphosMotion() {
+  const stage = document.getElementById('delphos-stage');
+  const statusText = document.getElementById('delphos-status');
+
+  if (!stage || !statusText || stage.dataset.initialized === 'true') return;
+  stage.dataset.initialized = 'true';
+
+  const inTracks = document.querySelectorAll<SVGPathElement>('.in-track');
+  const outTracks = document.querySelectorAll<SVGPathElement>('.out-track');
+
+  [...Array.from(inTracks), ...Array.from(outTracks)].forEach((path) => {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = `${length}`;
+  });
+
+  gsap.set('.delphos-core', { scale: 0.8, opacity: 0 });
+  gsap.set('.input-node', { opacity: 0, x: -20 });
+  gsap.set('.output-node', { opacity: 0, x: 20 });
+  gsap.set('.flow-line', { opacity: 0 });
+  gsap.set('.core-glass', { boxShadow: '0 0 30px rgba(0,0,0,0.5)' });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: stage,
+      start: 'top 75%',
+      toggleActions: 'play none none none',
+    },
+  });
+
+  tl.to('.delphos-core', { scale: 1, opacity: 1, duration: 2, ease: 'power2.out' });
+
+  gsap.to('.ring-1', { rotation: 360, duration: 20, repeat: -1, ease: 'linear' });
+  gsap.to('.ring-2', { rotation: -360, duration: 15, repeat: -1, ease: 'linear' });
+  gsap.to('.ring-3', { rotation: 180, duration: 30, repeat: -1, ease: 'linear' });
+
+  const inNodes = document.querySelectorAll('.input-node');
+  const inLines = document.querySelectorAll('.in-line');
+
+  inNodes.forEach((node, i) => {
+    const track = inTracks[i];
+    const line = inLines[i];
+    tl.to(node, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' }, i === 0 ? '-=0.2' : '-=0.1');
+    tl.to(track, { strokeDashoffset: 0, duration: 0.5, ease: 'power1.inOut' }, '<0.1');
+    tl.to(line, { opacity: 1, duration: 0.3 }, '<0.3');
+  });
+
+  tl.add(() => {
+    statusText.innerText = 'PROCESSANDO...';
+    statusText.style.color = '#8b5cf6';
+  });
+
+  gsap.to('.core-glass', {
+    boxShadow: '0 0 50px rgba(59, 130, 246, 0.4), inset 0 0 20px rgba(59, 130, 246, 0.1)',
+    borderColor: 'rgba(59, 130, 246, 0.5)',
+    duration: 1.5, yoyo: true, repeat: -1, ease: 'sine.inOut',
+  });
+
+  const outNodes = document.querySelectorAll('.output-node');
+  const outLines = document.querySelectorAll('.out-line');
+
+  outNodes.forEach((node, i) => {
+    const track = outTracks[i];
+    const line = outLines[i];
+    tl.to(track, { strokeDashoffset: 0, duration: 0.5, ease: 'power1.inOut' }, i === 0 ? '+=0.3' : '-=0.2');
+    tl.to(node, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' }, '<0.3');
+    tl.to(line, { opacity: 1, duration: 0.3 }, '<0.1');
+  });
+
+  tl.add(() => {
+    statusText.innerText = 'HUB ATIVO';
+    statusText.style.color = '#10b981';
+    gsap.to('.core-glass', {
+      boxShadow: '0 0 50px rgba(16, 185, 129, 0.3), inset 0 0 20px rgba(16, 185, 129, 0.1)',
+      borderColor: 'rgba(16, 185, 129, 0.4)',
+      duration: 1.5, yoyo: true, repeat: -1, ease: 'sine.inOut', overwrite: 'auto',
+    });
+  });
+
+  gsap.to('.in-line', { strokeDashoffset: -50, duration: 1, repeat: -1, ease: 'linear' });
+  gsap.to('.out-line', { strokeDashoffset: -50, duration: 0.8, repeat: -1, ease: 'linear' });
+}
+
+// ── Portal do Observatório: desktop→mobile metamorphosis ─────
+export const initPortalMotion = () => {
+  const stage = document.getElementById('portal-infinite-stage');
+  const windowEl = document.getElementById('portal-window-el');
+
+  if (!stage || !windowEl || stage.dataset.initialized === 'true') return;
+  stage.dataset.initialized = 'true';
+
+  const styles = getComputedStyle(document.documentElement);
+  const blueGea = styles.getPropertyValue('--color-primary').trim() || '#3b82f6';
+  const greenRo = styles.getPropertyValue('--color-success').trim() || '#10b981';
+  const wireBase = 'rgba(148, 163, 184, 0.15)';
+  const textBase = 'rgba(148, 163, 184, 0.4)';
+  const emptyHeights = [0.2, 0.3, 0.1, 0.4, 0.2];
+  const fullHeights = [0.6, 0.8, 0.4, 0.9, 0.7];
+
+  gsap.set(windowEl, { scale: 1, opacity: 1, width: 600, height: 360, clearProps: 'boxShadow,borderColor' });
+  gsap.set('.wire-body', { flexDirection: 'row' });
+  gsap.set('.wire-sidebar', { width: '40px', flexDirection: 'column', height: 'auto' });
+  gsap.set('.side-item', { width: '100%', height: '24px' });
+  gsap.set('.feed-line', { opacity: 0, strokeDashoffset: 60 });
+
+  document.querySelectorAll('#portal-infinite-stage .wire-block, #portal-infinite-stage .bar').forEach((el) => {
+    el.classList.add('skeleton');
+    gsap.set(el, { clearProps: 'backgroundColor,boxShadow' });
+  });
+  emptyHeights.forEach((h, i) => gsap.set(`#portal-infinite-stage .bar-${i + 1}`, { scaleY: h }));
+
+  const tl = gsap.timeline({
+    repeat: -1,
+    scrollTrigger: {
+      trigger: stage,
+      start: 'top 75%',
+      toggleActions: 'play pause resume pause',
+    },
+  });
+
+  tl.addLabel('desktop');
+  tl.to(windowEl, { width: 260, height: 440, duration: 1.5, ease: 'power3.inOut' }, '+=2');
+  tl.to('.wire-body', { flexDirection: 'column' }, '<');
+  tl.to('.wire-sidebar', { width: '100%', flexDirection: 'row', height: '30px' }, '<');
+  tl.to('.side-item', { width: '30%', height: '100%' }, '<');
+
+  tl.addLabel('mobileEmpty');
+  tl.to('.feed-line', { opacity: 1, duration: 0.3 }, '+=0.5');
+  tl.to('.feed-line', { strokeDashoffset: -120, duration: 0.8, ease: 'linear' });
+  tl.to('.sync-flash', { opacity: 1, duration: 0.1, yoyo: true, repeat: 1 });
+  tl.to(windowEl, { borderColor: 'rgba(16, 185, 129, 0.4)', boxShadow: '0 20px 40px rgba(0,0,0,0.6), inset 0 0 20px rgba(16, 185, 129, 0.1)', duration: 0.3 });
+
+  tl.add(() => {
+    document.querySelectorAll('#portal-infinite-stage .wire-block, #portal-infinite-stage .bar').forEach((el) => el.classList.remove('skeleton'));
+  });
+  tl.to('.logo-block', { backgroundColor: blueGea, boxShadow: `0 0 10px ${blueGea}`, duration: 0.5 }, '<');
+  tl.to('.title-block', { backgroundColor: 'rgba(255, 255, 255, 0.8)', duration: 0.5 }, '<');
+  tl.to('.kpi-box', { backgroundColor: rgbaToHex(greenRo, 0.8), boxShadow: `0 0 10px ${greenRo}`, duration: 0.5, stagger: 0.1 }, '<');
+  tl.to('#portal-infinite-stage .bar', { backgroundColor: rgbaToHex(blueGea, 0.8), boxShadow: `0 0 10px ${blueGea}`, duration: 0.5, stagger: 0.05 }, '<');
+  fullHeights.forEach((h, i) => {
+    tl.to(`#portal-infinite-stage .bar-${i + 1}`, { scaleY: h, duration: 0.8, ease: 'elastic.out(1, 0.6)' }, '<0.05');
+  });
+  tl.to('.feed-line', { opacity: 0, duration: 0.5 }, '+=0.5');
+
+  tl.addLabel('mobileFull');
+  tl.set({}, {}, '+=3');
+
+  tl.addLabel('resetDataStart');
+  emptyHeights.forEach((h, i) => {
+    tl.to(`#portal-infinite-stage .bar-${i + 1}`, { scaleY: h, duration: 0.6, ease: 'power2.inOut' }, '<0.05');
+  });
+  tl.to(windowEl, { borderColor: 'rgba(255,255,255,0.1)', boxShadow: '0 20px 40px rgba(0,0,0,0.6)', duration: 0.5 }, '<');
+  tl.to('.kpi-box, #portal-infinite-stage .bar', { backgroundColor: wireBase, boxShadow: 'none', duration: 0.5 }, '<');
+  tl.to('.logo-block', { backgroundColor: wireBase, boxShadow: 'none', duration: 0.5 }, '<');
+  tl.to('.title-block, .subtitle-block', { backgroundColor: textBase, duration: 0.5 }, '<');
+  tl.add(() => {
+    document.querySelectorAll('#portal-infinite-stage .wire-block, #portal-infinite-stage .bar').forEach((el) => el.classList.add('skeleton'));
+  }, '-=0.2');
+  tl.to('.feed-line', { opacity: 0, duration: 0.3 }, '-=0.3');
+
+  tl.addLabel('resetLayoutStart');
+  tl.to(windowEl, { width: 600, height: 360, duration: 1.5, ease: 'power3.inOut' }, '+=1');
+  tl.to('.wire-body', { flexDirection: 'row' }, '<');
+  tl.to('.wire-sidebar', { width: '40px', flexDirection: 'column', height: 'auto' }, '<');
+  tl.to('.side-item', { width: '100%', height: '24px' }, '<');
+};
+
 // ── Nav dots: adapt color based on section background ────────
 function initNavDotColors() {
   const nav = document.querySelector('.slide-nav');

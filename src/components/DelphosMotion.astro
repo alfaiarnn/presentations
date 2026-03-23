@@ -1,0 +1,88 @@
+---
+// src/components/DelphosMotion.astro
+---
+<div class="cinematic-container" id="delphos-stage">
+  <svg class="data-network" viewBox="0 0 800 450">
+    <path class="track in-track" d="M 120 70 Q 250 70 350 225" />
+    <path class="flow-line in-line" d="M 120 70 Q 250 70 350 225" />
+    <path class="track in-track" d="M 100 145 Q 250 145 350 225" />
+    <path class="flow-line in-line" d="M 100 145 Q 250 145 350 225" />
+    <path class="track in-track" d="M 90 225 L 350 225" />
+    <path class="flow-line in-line" d="M 90 225 L 350 225" />
+    <path class="track in-track" d="M 100 305 Q 250 305 350 225" />
+    <path class="flow-line in-line" d="M 100 305 Q 250 305 350 225" />
+    <path class="track in-track" d="M 120 380 Q 250 380 350 225" />
+    <path class="flow-line in-line" d="M 120 380 Q 250 380 350 225" />
+
+    <path class="track out-track" d="M 450 225 Q 550 120 680 120" />
+    <path class="flow-line out-line" d="M 450 225 Q 550 120 680 120" />
+    <path class="track out-track" d="M 450 225 L 680 225" />
+    <path class="flow-line out-line" d="M 450 225 L 680 225" />
+    <path class="track out-track" d="M 450 225 Q 550 330 680 330" />
+    <path class="flow-line out-line" d="M 450 225 Q 550 330 680 330" />
+  </svg>
+
+  <div class="node input-node" style="top: 15.6%; left: 15%;"><span class="node-dot blue"></span> IBGE</div>
+  <div class="node input-node" style="top: 32.2%; left: 12.5%;"><span class="node-dot purple"></span> DATASUS</div>
+  <div class="node input-node" style="top: 50%; left: 11.25%;"><span class="node-dot blue"></span> IPEA</div>
+  <div class="node input-node" style="top: 67.8%; left: 12.5%;"><span class="node-dot purple"></span> ESTADO</div>
+  <div class="node input-node" style="top: 84.4%; left: 15%;"><span class="node-dot grey"></span> OUTRAS FONTES</div>
+
+  <div class="delphos-core">
+    <div class="core-rings">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+    </div>
+    <div class="core-glass">
+      <h2 class="core-title">DELPHOS</h2>
+      <div class="core-status" id="delphos-status">INICIANDO...</div>
+    </div>
+  </div>
+
+  <div class="node output-node" style="top: 26.7%; left: 85%;">PORTAL DO OBS.<span class="node-dot green"></span></div>
+  <div class="node output-node" style="top: 50%; left: 85%;">TRANSPARÊNCIA<span class="node-dot green"></span></div>
+  <div class="node output-node" style="top: 73.3%; left: 85%;">ECOSSISTEMA GEA<span class="node-dot green"></span></div>
+</div>
+
+<style>
+  .cinematic-container {
+    width: 100%; height: 100%; min-height: 450px; position: relative;
+    background: radial-gradient(circle at center, var(--bg-surface, #0f172a) 0%, #020617 100%);
+    border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+  }
+  .data-network { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+  .track { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 2px; }
+  .flow-line { fill: none; stroke-width: 4px; stroke-linecap: round; stroke-dasharray: 4 46; filter: drop-shadow(0 0 6px currentColor); opacity: 0; }
+  .in-line { stroke: var(--color-primary, #3b82f6); }
+  .out-line { stroke: var(--color-success, #10b981); }
+  .node { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 8px; color: var(--text-dim, #94a3b8); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; z-index: 5; opacity: 0; }
+  .node-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .blue { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+  .purple { background: #8b5cf6; box-shadow: 0 0 10px #8b5cf6; }
+  .green { background: #10b981; box-shadow: 0 0 10px #10b981; }
+  .grey { background: #94a3b8; box-shadow: 0 0 10px #94a3b8; }
+  .delphos-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 160px; height: 160px; z-index: 10; display: flex; justify-content: center; align-items: center; }
+  .core-glass { width: 130px; height: 130px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.02); }
+  .core-title { margin: 0; color: #f8fafc; font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; letter-spacing: 3px; text-shadow: 0 0 15px rgba(255,255,255,0.3); }
+  .core-status { margin-top: 6px; color: #94a3b8; font-size: 10px; font-weight: 700; letter-spacing: 2px; }
+  .core-rings { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+  .ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; }
+  .ring-1 { width: 150px; height: 150px; border: 1px dashed rgba(59, 130, 246, 0.4); }
+  .ring-2 { width: 180px; height: 180px; border: 1px solid rgba(139, 92, 246, 0.2); border-left-color: transparent; border-right-color: transparent; }
+  .ring-3 { width: 220px; height: 220px; border: 1px dotted rgba(255, 255, 255, 0.1); }
+</style>
+
+<script>
+  import { initDelphosMotion } from '../scripts/animations';
+
+  document.addEventListener('astro:page-load', () => {
+    initDelphosMotion();
+  });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initDelphosMotion, 100);
+  } else {
+    document.addEventListener('DOMContentLoaded', initDelphosMotion);
+  }
+</script>

@@ -534,6 +534,13 @@
       align-items: center;
     }
 
+    /* ── Motion full-width (Delphos) ────────────────────────── */
+    .motion-fullwidth {
+      margin-top: var(--space-10);
+      width: 100%;
+      min-height: 420px;
+    }
+
     /* ── Mockup placeholder ─────────────────────────────────── */
     .mockup-frame {
       position: relative;

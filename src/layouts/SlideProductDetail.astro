@@ -4,6 +4,8 @@ import MockupFrame from '../components/MockupFrame.astro';
 import PillarCard from '../components/PillarCard.astro';
 import Chip from '../components/Chip.astro';
 import Badge from '../components/Badge.astro';
+import DelphosMotion from '../components/DelphosMotion.astro';
+import PortalMotion from '../components/PortalMotion.astro';
 
 interface ContentBlockData {
   label: string;
@@ -77,24 +79,34 @@ const resolvedMockupSrc = mockupSrc ? `${base}/${mockupSrc.replace(/^\//, '')}` 
         )}
       </div>
 
-      {kpi ? (
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-8);">
-          <div class="kpi-card">
-            <span class="kpi-card__number" data-count={kpi.value}>{kpi.value}</span>
-            <span class="kpi-card__label">{kpi.label}</span>
+      {id !== 's05' && (
+        id === 's06' ? (
+          <PortalMotion />
+        ) : kpi ? (
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-8);">
+            <div class="kpi-card">
+              <span class="kpi-card__number" data-count={kpi.value}>{kpi.value}</span>
+              <span class="kpi-card__label">{kpi.label}</span>
+            </div>
+            {kpi.caption && (
+              <p style="font-size: var(--text-xs); color: var(--gray-500); text-align: center; max-width: 240px; line-height: 1.5;">{kpi.caption}</p>
+            )}
           </div>
-          {kpi.caption && (
-            <p style="font-size: var(--text-xs); color: var(--gray-500); text-align: center; max-width: 240px; line-height: 1.5;">{kpi.caption}</p>
-          )}
-        </div>
-      ) : (
-        <MockupFrame
-          alt={mockupAlt || title}
-          src={resolvedMockupSrc}
-          placeholderIcon={placeholderIcon}
-        />
+        ) : (
+          <MockupFrame
+            alt={mockupAlt || title}
+            src={resolvedMockupSrc}
+            placeholderIcon={placeholderIcon}
+          />
+        )
       )}
     </div>
+
+    {id === 's05' && (
+      <div class="motion-fullwidth">
+        <DelphosMotion />
+      </div>
+    )}
 
     {pillars && pillars.length > 0 && (
       <div class="pillars-grid">
