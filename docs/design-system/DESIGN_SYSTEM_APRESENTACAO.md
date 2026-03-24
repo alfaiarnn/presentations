@@ -1,32 +1,47 @@
-# DESIGN_SYSTEM_APRESENTACAO.md
-## Design System — SEPOG: Produtos Estratégicos
-### Landing page de apresentação institucional
+# Design System — SEPOG: Produtos Estratégicos
+
+## Landing page de apresentação institucional (Astro + GSAP)
 
 > Fusão entre os tokens do Design System interno (DGEPP/GEA) e a linguagem visual
 > do template Bluey (Figma Slides). Usar este documento como source of truth
-> para a implementação HTML/CSS da apresentação.
+> para a implementação dos componentes em `src/components/`.
 
 ---
+
+## 🗒️ Arquitetura de Documentação
+
+Este projeto segue uma estrutura organizada em `/docs`:
+
+- `/design-system/`: Este documento (Identidade visual e tokens).
+- `/slides/`: Detalhamento de conteúdo e design por slide.
+- `/legacy/`: Registro das versões estáticas originais.
+
+---
+
 
 ## 1. IDENTIDADE E TOM
 
 ### Conceito visual
+
 **Institucional, moderno e orientado a produto** — a apresentação precisa comunicar
 competência técnica e clareza de propósito. Referência: GOV.BR modernizado, Linear,
 Notion limpo. Não é uma apresentação de startup — é um portfólio de produtos públicos.
 
 ### Tom
+
 - Objetivo e direto: cada seção entrega uma informação, não um catálogo
 - Linguagem em português brasileiro, formal e acessível
 - Labels dos produtos sempre em português
 - Badges de status usam emojis institucionais: ✅ 🔄 ⚠️
 
 ### Público
+
 - Gestores e secretários de Estado (desktop, atenção limitada)
 - Equipe técnica interna GEA/DGEPP
 - Formato: tela 1366×768 a 1920×1080, leitura em apresentação projetada
 
 ---
+
 
 ## 2. PALETA DE CORES
 
@@ -70,14 +85,14 @@ O Bluey usa azul (#0D99FF) como cor primária. Na nossa implementação,
 **substituímos o azul pelo brand-500 (#4CAF4F)** mantendo a mesma lógica de uso:
 
 | Bluey original | Nossa implementação | Uso |
-|---|---|---|
+| :--- | :--- | :--- |
 | `#0D99FF` | `#4CAF4F` (brand-500) | Cor de destaque principal |
 | `#E8F3FF` | `#E8F5E9` (brand-100) | Fundo de seção destacada |
 | `rgba(13,153,255,0.1)` | `rgba(76,175,79,0.1)` | Overlay sutil |
 
 ### 2.3 Fundo de seções (alternância)
 
-```
+```text
 S01 Capa          → white
 S02 Visão Geral   → gray-50
 S03 SIPP          → white
@@ -86,6 +101,7 @@ S05 Delphos       → white
 S06 Novo Portal   → brand-50
 S07 Encerramento  → brand-600 (fundo escuro, texto white)
 ```
+
 
 ---
 

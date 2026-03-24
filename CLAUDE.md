@@ -1,6 +1,6 @@
 # SEPOG: Produtos Estratégicos
 
-Apresentação institucional da SEPOG/DGEPP/GEA (Governo de Rondônia) — landing page scroll-based com slides em scroll-snap vertical.
+Apresentação institucional da SEPOG/DGEPP/GEA (Governo de Rondônia) — landing page scroll-based construída com Astro e GSAP.
 
 ## Contexto
 
@@ -9,43 +9,49 @@ Produtos: SIPP (em operação), Watchtower (em operação), Delphos (em desenvol
 
 ## Stack
 
-- Astro 4+ (SSG)
-- GSAP 3.12.5 (animações scroll-triggered)
-- CSS custom properties (design tokens em src/styles/global.css)
-- Google Fonts: DM Sans + JetBrains Mono
+- **Framework:** Astro 4.16+ (SSG)
+- **Animações:** GSAP 3.12.5 (ScrollTrigger + ScrollTo)
+- **Estilos:** Vanilla CSS (Design Tokens em `src/styles/global.css`)
+- **Fontes:** DM Sans (Google Fonts) + JetBrains Mono (monospaced)
 
-## Estrutura
+## Estrutura de Pastas
 
-- Conteúdo: src/content/slides/*.yaml
-- Layouts: src/layouts/ (SlideHero, SlideOverviewGrid, SlideProductDetail, SlideContext, SlideClosing)
-- Componentes: src/components/ (Badge, Chip, ContentBlock, ProductCard, PillarCard, MockupFrame, SlideNav)
-- Estilos: src/styles/global.css (design tokens)
-- Animações: src/scripts/animations.js (GSAP + ScrollTrigger)
+- `src/content/slides/`: Conteúdo dos slides em arquivos YAML seguindo o schema Zod.
+- `src/layouts/`: Templates de slides: `SlideHero`, `SlideOverviewGrid`, `SlideProductDetail`, `SlideContext`, `SlideClosing`.
+- `src/components/`: Componentes UI: `Badge`, `Chip`, `ContentBlock`, `ProductCard`, `PillarCard`, `MockupFrame`, `SlideNav`.
+- `src/components/motions/`: Animações complexas: `DelphosMotion`, `PortalMotion`.
+- `src/scripts/animations.ts`: Lógica principal de animações GSAP e ScrollTrigger.
+- `src/styles/global.css`: Design system, tokens e estilos globais.
+- `docs/`: Documentação organizada:
+- `/design-system/`: Source of truth visual.
+- `/slides/`: Planejamento e notas de design de cada slide.
+- `/legacy/`: Versões estáticas originais (não-Astro).
 
 ## Comandos
 
-- npm run dev — servidor de desenvolvimento (porta 4321)
-- npm run build — build de produção
-- npm run preview — preview do build
+- `npm run dev` — Servidor de desenvolvimento (porta 4321)
+- `npm run build` — Build de produção (saída em `dist/`)
+- `npm run preview` — Preview local do build de produção
+- `npm run check` — Validação de tipos e diagnósticos Astro
+
+## Deploy
+
+- **GitHub Pages:** <https://alfaiarnn.github.io/presentations/>
+- **Workflow:** `.github/workflows/deploy.yml` (disparado no push para `main`)
+- **Base Path:** `/presentations/` (configurado em `astro.config.mjs`)
 
 ## Convenções
 
-- Conteúdo em PT-BR formal/institucional
-- Nomenclatura YAML: sNN-slug.yaml (ex: s03-sipp.yaml)
-- CSS variables com prefixo semântico (--brand-*, --gray-*, --text-*, --space-*)
-- Animações via GSAP, nunca CSS transitions para efeitos complexos
-- Ordem dos slides definida em src/pages/index.astro (número no filename é ID, não posição)
-- Nunca renumerar arquivos existentes ao adicionar/remover slides
-
-## UX Copy
-
-- Labels padronizados: "O que é" / "Desafio" / "Solução" / "Status atual"
-- Badges apenas: "Em operação" ou "Em desenvolvimento"
-- Tom acessível para gestores públicos — sem jargão técnico
-- Tipografia mínima: 1rem para body, 4rem para hero (otimizado para projeção)
+- **Idioma:** PT-BR formal e institucional.
+- **Nomenclatura slides:** `sNN-slug.yaml` (ex: `s03-sipp.yaml`). O número no nome não define a ordem (definida pela propriedade `order` no YAML).
+- **CSS:** Uso intensivo de CSS variables com prefixos (`--brand-`, `--dark-`, `--text-`, `--space-`).
+- **Animações:** Sempre via GSAP (`src/scripts/animations.ts`). Evitar transitions CSS para efeitos complexos de scroll.
+- **UX Copy:**
+  - Labels: "O que é", "Desafio", "Solução", "Status atual".
+  - Badges: "Em operação" (variant: active), "Em desenvolvimento" (variant: wip).
 
 ## Skills disponíveis
 
-- /slide-manager — editar, criar, navegar layouts e gerenciar slides
-- /new-slide — criar novo slide (delega para slide-manager)
-- /deploy-check — validar build antes de push
+- `/slide-manager` — Gerenciador completo de slides e layouts.
+- `/new-slide` — Atalho para criação de novos slides via manager.
+- `/deploy-check` — Validador de pré-vôo para o build de produção.
