@@ -15,6 +15,8 @@ export function initAnimations() {
   initHeroAnimations();
   initSectionAnimations();
   initCardStagger();
+  initTiltEffect();
+  initWipPulse();
   initParallax();
   initKpiCounter();
   initNavDots();
@@ -160,6 +162,43 @@ function initCardStagger() {
       toggleActions: 'play none none none',
       once: true,
     },
+  });
+}
+
+// ── 3D Tilt effect on cards ───────────────────────────────
+function initTiltEffect() {
+  document.querySelectorAll<HTMLElement>('.product-card').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -4;
+      const rotateY = ((x - centerX) / centerX) * 4;
+
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
+// ── WIP Card Pulse (Breathing effect) ───────────────────────
+function initWipPulse() {
+  const overlays = document.querySelectorAll('.product-card--wip .wip-overlay');
+  if (overlays.length === 0) return;
+
+  gsap.to(overlays, {
+    opacity: 0.6,
+    duration: 1.6,
+    ease: 'sine.inOut',
+    yoyo: true,
+    repeat: -1,
   });
 }
 

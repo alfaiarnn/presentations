@@ -24,9 +24,10 @@ Landing page performática e interativa para apresentação dos produtos estrat�
 ├── docs/                   # Documentação do projeto
 │   ├── design-system/      # Guia de estilos e tokens visuais
 │   ├── slides/             # Planejamento individual de cada slide
-│   └── legacy/             # Arquivos da versão estática original
+│   └── legacy/             # [DEPRECATED] Arquivos da versão estática original (mantidos para referência)
 ├── src/
 │   ├── components/         # Componentes UI (Cards, Badges, Nav)
+│   │   └── motions/        # Animações complexas (SVG, GSAP)
 │   ├── content/
 │   │   └── slides/         # Arquivos YAML com o conteúdo real
 │   ├── layouts/            # Templates estruturais de cada tipo de slide
